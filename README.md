@@ -1,4 +1,4 @@
-******AI-Powered Resume Fit Checker (Dynamic ATS Simulation)******
+******HireMatch-AI-Resume Fit Analyzer*****
 **Overview**
 This project is a Resume Fit Checker that simulates real ATS (Applicant Tracking System) scoring.
 It allows candidates to upload PDF/DOCX resumes or paste text, compares it against a Job Description (JD), and outputs a dynamic ATS score with a visual dashboard.
