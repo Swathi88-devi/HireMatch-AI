@@ -1,7 +1,0 @@
-gradio
-pdfplumber
-python-docx
-nltk
-sentence-transformers
-plotly
-torch
