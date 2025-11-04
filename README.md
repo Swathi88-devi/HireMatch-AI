@@ -68,7 +68,7 @@ ATS proprietary algorithms — real ATS may use ML ranking or boolean filters th
 Privacy Note: Uploaded resumes are processed temporarily and not stored.
 **Installation / Local Run (Optional)**
 Clone repository:
-git clone https://github.com/yourusername/ai-ats-resume-checker.git
+git clone https://github.com/yourusername/HireMatch-AI.git
 cd ai-ats-resume-checker
 Install dependencies:
 pip install -r requirements.txt
