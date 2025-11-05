@@ -161,7 +161,8 @@ def get_dynamic_weights(jd_text):
     education_lines = sum(1 for line in jd_lines if any(d in line for d in sum(EDU_SYNONYMS.values(), [])))
     achievement_lines = sum(1 for line in jd_lines if re.search(r'\d+[%]?', line))
     total = skills_lines + experience_lines + education_lines + achievement_lines
-    if total == 0: total = 1
+    if total == 0:
+        total = 1
     weights = {
         "skills": skills_lines / total,
         "experience": experience_lines / total,
@@ -170,7 +171,8 @@ def get_dynamic_weights(jd_text):
         "formatting": 0.1
     }
     sum_w = sum(weights.values())
-    for k in weights: weights[k] /= sum_w
+    for k in weights:
+        weights[k] /= sum_w
     return weights
 
 # ----------------------------
@@ -189,8 +191,13 @@ def ats_total_score(resume_text, jd_text, skills_score):
         weights["achievement"] * achievement +
         weights["formatting"] * formatting, 2
     )
-    breakdown = {"skills": skills_score, "experience": experience, "education": education,
-                 "achievement": achievement, "formatting": formatting}
+    breakdown = {
+        "skills": skills_score,
+        "experience": experience,
+        "education": education,
+        "achievement": achievement,
+        "formatting": formatting
+    }
     return total, breakdown
 
 # ----------------------------
@@ -200,12 +207,16 @@ def create_dashboard(breakdown):
     categories = list(breakdown.keys())
     values = [v * 100 for v in breakdown.values()]
     fig = go.Figure([go.Bar(x=categories, y=values, marker_color='teal')])
-    fig.update_layout(title="Resume ATS Sub-Scores", yaxis=dict(title="Score (%)", range=[0, 100]),
-                      xaxis=dict(title="Factors"), template="plotly_white")
+    fig.update_layout(
+        title="Resume ATS Sub-Scores",
+        yaxis=dict(title="Score (%)", range=[0, 100]),
+        xaxis=dict(title="Factors"),
+        template="plotly_white"
+    )
     return fig
 
 # ----------------------------
-# Optional: Project / Job Title Detection
+# Project / Job Title Detection
 # ----------------------------
 PROJECT_KEYWORDS = ["github", "kaggle", "portfolio", "project"]
 JOB_TITLE_KEYWORDS = ["engineer", "analyst", "developer", "manager", "intern"]
@@ -279,53 +290,7 @@ with gr.Blocks() as demo:
                  other_scores, dashboard, projects_box, job_titles_box]
     )
 
-# ----------------------------
-# ✅ Render Port Binding (Important)
-# ----------------------------
-# ----------------------------
-# ✅ Render Port Binding (Final Fix)
-# ----------------------------
-# ----------------------------
-# ✅ Render Port Binding — Final Fix (tested)
-# ----------------------------
-
-import os
-import gradio as gr
-import pdfplumber
-import re
-import pandas as pd
-
-# -------- Your existing resume logic code ----------
-def extract_text_from_pdf(pdf):
-    with pdfplumber.open(pdf) as pdf_obj:
-        text = ""
-        for page in pdf_obj.pages:
-            text += page.extract_text() or ""
-    return text
-
-def analyze_resume(resume_text):
-    # Dummy logic (replace with your ATS code)
-    score = len(resume_text) % 100
-    return f"Resume ATS Score: {score}%"
-
-def process_resume(pdf):
-    text = extract_text_from_pdf(pdf)
-    return analyze_resume(text)
-
-# -------- Gradio UI ----------
-iface = gr.Interface(
-    fn=process_resume,
-    inputs=gr.File(label="Upload your Resume (PDF)"),
-    outputs="text",
-    title="HireMatch AI - Resume ATS Analyzer",
-    description="Upload your resume and get an estimated ATS compatibility score.",
-)
-
-# -------- FIX: Bind to Render port --------
+# -------- ✅ Render Port Binding (Final Correct Version) --------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
-    iface.launch(
-        server_name="0.0.0.0",
-        server_port=port,
-        share=False
-    )
+    demo.launch(server_name="0.0.0.0", server_port=port, share=False)
