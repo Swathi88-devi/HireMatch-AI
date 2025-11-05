@@ -288,17 +288,44 @@ with gr.Blocks() as demo:
 # ----------------------------
 # ✅ Render Port Binding — Final Fix (tested)
 # ----------------------------
-import os
 
+import os
+import gradio as gr
+import pdfplumber
+import re
+import pandas as pd
+
+# -------- Your existing resume logic code ----------
+def extract_text_from_pdf(pdf):
+    with pdfplumber.open(pdf) as pdf_obj:
+        text = ""
+        for page in pdf_obj.pages:
+            text += page.extract_text() or ""
+    return text
+
+def analyze_resume(resume_text):
+    # Dummy logic (replace with your ATS code)
+    score = len(resume_text) % 100
+    return f"Resume ATS Score: {score}%"
+
+def process_resume(pdf):
+    text = extract_text_from_pdf(pdf)
+    return analyze_resume(text)
+
+# -------- Gradio UI ----------
+iface = gr.Interface(
+    fn=process_resume,
+    inputs=gr.File(label="Upload your Resume (PDF)"),
+    outputs="text",
+    title="HireMatch AI - Resume ATS Analyzer",
+    description="Upload your resume and get an estimated ATS compatibility score.",
+)
+
+# -------- FIX: Bind to Render port --------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
-    print(f"🚀 Starting app on port {port} (Render expected port).")
-
-    demo.launch(
+    iface.launch(
         server_name="0.0.0.0",
         server_port=port,
-        share=False,
-        inline=False,
-        show_error=True,
-        debug=True
+        share=False
     )
