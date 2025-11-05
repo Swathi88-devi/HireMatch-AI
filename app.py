@@ -285,15 +285,20 @@ with gr.Blocks() as demo:
 # ----------------------------
 # ✅ Render Port Binding (Final Fix)
 # ----------------------------
+# ----------------------------
+# ✅ Render Port Binding — Final Fix (tested)
+# ----------------------------
 import os
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 7860))
-    print(f"🚀 Starting app on port {port}...")
+    port = int(os.environ.get("PORT", 10000))
+    print(f"🚀 Starting app on port {port} (Render expected port).")
+
     demo.launch(
         server_name="0.0.0.0",
         server_port=port,
         share=False,
         inline=False,
-        show_api=False
+        show_error=True,
+        debug=True
     )
